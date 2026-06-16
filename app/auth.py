@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from .db import get_db
 
 auth = Blueprint("auth", __name__)
@@ -39,6 +39,31 @@ def register():
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form["email"].strip().lower()
+        password = request.form["password"]
+
+        db = get_db()
+        error = None
+
+        user = db.execute(
+            "SELECT * FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+
+        if user is None:
+            error = "Incorrect email."
+        elif not check_password_hash(
+            user["password_hash"],
+            password
+        ):
+            error = "Incorrect password."
+
+        if error is None:
+            return redirect(url_for("main.home"))
+
+        flash(error)
+
     return render_template("login.html")
 
 
