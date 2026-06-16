@@ -13,3 +13,11 @@ header {
 main {
     padding: 2rem;
 }
+
+.flash {
+    padding: 0.75rem 1rem;
+    background: #ffe3eb;
+    border: 1px solid #ffb8cc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}

@@ -20,6 +20,16 @@
     </header>
 
     <main>
+        {% with messages = get_flashed_messages()[-1:] %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <p class="flash">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}
         {% endblock %}
     </main>
